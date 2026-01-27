@@ -36,6 +36,7 @@ public class Basics {
 		
 		// Update Place
 		
+		given().queryParam("", "");
 		
 		
 	}
