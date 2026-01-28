@@ -7,13 +7,17 @@ import io.restassured.path.json.JsonPath;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+import org.testng.Assert;
+
+import files.ReUsableMethods;
 import files.payload;
 
 
 public class Basics {
+	
+	static String placeId;
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		//given - all input details
 		//when - Submit the API
@@ -35,8 +39,32 @@ public class Basics {
 		
 		
 		// Update Place
+		String newAddress="Summer Walk Africa";
 		
-		given().queryParam("", "");
+		String putBody = payload.UpdatePlace(placeId,newAddress);
+		String PutResponse=given().log().all().queryParam("key", "qaclick123 ").header("Content-Type","application/json")
+		.body(putBody)
+		.when().put("maps/api/place/update/json")
+		.then().log().all().assertThat().statusCode(200)
+		.body("msg", equalTo("Address successfully updated"))
+		.extract().response().asString();
+		
+		System.out.println("Response: " + PutResponse);
+		
+		//Get Place
+		
+		String getPlaceResponse=given().log().all().queryParam("key", "qaclick123")
+		.queryParam("place_id", placeId)
+		.when().get("/maps/api/place/get/json")
+		.then().log().all().assertThat().statusCode(200).extract().response().asString();
+		
+		JsonPath js1=ReUsableMethods.rawTpJson(getPlaceResponse);
+		
+		//JsonPath js1=new JsonPath(getPlaceResponse);
+		String actualAddress=js1.getString("address");
+		System.out.println(actualAddress);
+		
+		Assert.assertEquals(actualAddress, newAddress);
 		
 		
 	}
