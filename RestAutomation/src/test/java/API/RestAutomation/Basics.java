@@ -7,6 +7,10 @@ import io.restassured.path.json.JsonPath;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.testng.Assert;
 
 import files.ReUsableMethods;
@@ -17,7 +21,7 @@ public class Basics {
 	
 	static String placeId;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		//given - all input details
 		//when - Submit the API
@@ -25,7 +29,8 @@ public class Basics {
 		
 		RestAssured.baseURI="https://rahulshettyacademy.com";
 		String response=given().log().all().queryParam("key" , "qaclick123").header("Content-Type","application/json")
-		.body(payload.AddPlace())
+		//.body(payload.AddPlace())
+		.body(new String (Files.readAllBytes(Paths.get("C:\\Users\\KUNAL\\Downloads\\addPlace.json"))))		
 		.when().post("/maps/api/place/add/json")
 		.then().assertThat().statusCode(200).body("scope", equalTo("APP"))
 		.header("server", "Apache/2.4.52 (Ubuntu)").extract().response().asString();
@@ -58,7 +63,7 @@ public class Basics {
 		.when().get("/maps/api/place/get/json")
 		.then().log().all().assertThat().statusCode(200).extract().response().asString();
 		
-		JsonPath js1=ReUsableMethods.rawTpJson(getPlaceResponse);
+		JsonPath js1=ReUsableMethods.rawToJson(getPlaceResponse);
 		
 		//JsonPath js1=new JsonPath(getPlaceResponse);
 		String actualAddress=js1.getString("address");
