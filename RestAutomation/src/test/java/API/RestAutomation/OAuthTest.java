@@ -3,6 +3,7 @@ package API.RestAutomation;
 import static io.restassured.RestAssured.given;
 
 import io.restassured.path.json.JsonPath;
+import pojo.GetCourse;
 
 public class OAuthTest {
 
@@ -18,17 +19,26 @@ public class OAuthTest {
 		.post("https://rahulshettyacademy.com/oauthapi/oauth2/resourceOwner/token").asString();
 		
 		
-		System.out.println(response);
+		System.out.println("Response: "+response);
 		
 		JsonPath jsonPath = new JsonPath(response);
 		
 		String accessToken = jsonPath.getString("access_token");
 		System.out.println(accessToken);
 		
-		String r2=given().queryParams("access_token", accessToken)
+		GetCourse gc=given().queryParams("access_token", accessToken)
 				.when()
-				.get("https://rahulshettyacademy.com/oauthapi/getCourseDetails").asString();
-		System.out.println(r2);
+				.get("https://rahulshettyacademy.com/oauthapi/getCourseDetails")
+				.as(GetCourse.class);
+		
+		System.out.println("GC: " +gc);
+		
+		System.out.println(gc.getlinkedIn());
+		System.out.println(gc.getInstructor());
+
+		
+		
+
 		
 
 	}

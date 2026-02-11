@@ -2,12 +2,12 @@ package pojo;
 
 public class GetCourse {
 	
+	private String instructor;
 	private String url;
 	private String services;
 	private String expertise;
-	private String Courses;
-	private String instructor;
-	private String linkedln;
+	private Courses Courses;  // it has nested json then in place of return type String --> pojo Class of this nested json  
+	private String linkedIn;
 	
 	public String getUrl() {
 		return url;
@@ -27,10 +27,10 @@ public class GetCourse {
 	public void setExpertise(String expertise) {
 		this.expertise = expertise;
 	}
-	public String getCourses() {
+	public pojo.Courses getCourses() {
 		return Courses;
 	}
-	public void setCourses(String courses) {
+	public void setCourses(pojo.Courses courses) {
 		Courses = courses;
 	}
 	public String getInstructor() {
@@ -39,11 +39,11 @@ public class GetCourse {
 	public void setInstructor(String instructor) {
 		this.instructor = instructor;
 	}
-	public String getLinkedln() {
-		return linkedln;
+	public String getlinkedIn() {
+		return linkedIn;
 	}
 	public void setLinkedln(String linkedln) {
-		this.linkedln = linkedln;
+		this.linkedIn = linkedln;
 	}
 	
 
